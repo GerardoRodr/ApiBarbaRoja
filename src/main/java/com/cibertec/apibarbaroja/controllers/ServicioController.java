@@ -38,11 +38,4 @@ public class ServicioController extends BaseControllerImpl<ServicioEntity, Servi
                             "} \n");
         }
     }
-
-
-    @PostMapping("/uploadImg")
-    public String subirImagenServicio(@RequestParam("image")MultipartFile file) throws IOException {
-        String imageUrl = servicio.subirImagenServicio(file, "corte");
-        return imageUrl;
-    }
 }
