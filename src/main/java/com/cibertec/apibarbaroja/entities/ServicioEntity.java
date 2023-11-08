@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
@@ -26,6 +27,7 @@ public class ServicioEntity extends BaseEntity {
     @Column(name = "RutaImagen")
     private String rutaImagen;
 
-    @JoinColumn(name = "IdCategoria")
-    private String idCategoria;
+    @ManyToOne
+    @JoinColumn(name = "IdCategoria", referencedColumnName = "id")
+    private CategoriaServicioEntity categoria;
 }
