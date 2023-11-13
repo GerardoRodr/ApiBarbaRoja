@@ -33,9 +33,10 @@ public class ServicioController extends BaseControllerImpl<ServicioEntity, Servi
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("{\"error\":\"Error. Por favor intente más tarde.\"}, {" +
+                    .body("{\"error\":\"Error. Por favor intente más tarde.\"}, \n{" +
+                            // Nomas pa ver el error xdd (BORRAR EN PRODUCCION)
                             e.getMessage() +
-                            "} \n");
+                            "}");
         }
     }
 }

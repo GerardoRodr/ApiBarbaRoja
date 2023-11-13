@@ -14,11 +14,13 @@ import java.time.LocalDateTime;
 @Table(name="reservas")
 public class ReservaEntity extends BaseEntity{
 
-    @JoinColumn(name = "IdCliente")
-    private String idCliente;
+    @ManyToOne
+    @JoinColumn(name = "IdCliente", referencedColumnName = "id")
+    private ClienteEntity cliente;
 
-    @JoinColumn(name = "IdServicio")
-    private String idServicio;
+    @ManyToOne
+    @JoinColumn(name = "IdServicio", referencedColumnName = "id")
+    private ServicioEntity servicio;
 
     @Column(name = "FechaReserva")
     private LocalDateTime fechaReserva;
