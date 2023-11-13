@@ -27,4 +27,25 @@ public class ReservaController extends BaseControllerImpl<ReservaEntity, Reserva
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al obtener reservas: " + e.getMessage());
         }
     }
+
+    /*DONDE:
+    estado 1: "PENDIENTE"
+    estado 2: "FINALIZADA"
+    estado 3: "CANCELADA"
+    */
+    @PutMapping("/actualizarEstado/{idReserva}")
+    public ResponseEntity<?> actualizarEstadoReserva(@PathVariable Integer idReserva, @RequestParam Integer estado) {
+        try {
+            if (estado < 4) {
+                String mensaje = reservaService.updateEstadoByIdReserva(idReserva, estado);
+                return ResponseEntity.ok(mensaje);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Elija por favor un estado valido");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al actualizar el estado de la reserva: " + e.getMessage());
+        }
+    }
 }

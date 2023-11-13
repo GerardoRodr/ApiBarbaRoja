@@ -4,6 +4,7 @@ import com.cibertec.apibarbaroja.entities.ReservaEntity;
 import com.cibertec.apibarbaroja.repositories.BaseRepository;
 import com.cibertec.apibarbaroja.repositories.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,31 @@ public class ReservaServiceImpl extends BaseServiceImpl<ReservaEntity, Integer> 
             return reservaRepository.findByCliente_Id(idCliente);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public String updateEstadoByIdReserva(int idReserva, int estado) throws Exception {
+        try {
+            if (reservaRepository.existsById(idReserva)) {
+                switch (estado){
+                    case 1:
+                        reservaRepository.updateEstadoById(idReserva, "PENDIENTE");
+                        return "Estado de la reserva actualizado correctamente";
+                    case 2:
+                        reservaRepository.updateEstadoById(idReserva, "FINALIZADA");
+                        return "Estado de la reserva actualizado correctamente";
+                    case 3:
+                        reservaRepository.updateEstadoById(idReserva, "CANCELADA");
+                        return "Estado de la reserva actualizado correctamente";
+                    default:
+                        return "Ingrese un estado valido";
+                }
+            } else {
+                return "La reserva no existe";
+            }
+        } catch (Exception e) {
+            throw new Exception("Error al actualizar el estado de la reserva: " + e.getMessage());
         }
     }
 }
