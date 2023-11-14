@@ -1,12 +1,15 @@
 package com.cibertec.apibarbaroja.services;
 
 import com.cibertec.apibarbaroja.entities.ReservaEntity;
+import com.cibertec.apibarbaroja.entities.ServicioEntity;
+import com.cibertec.apibarbaroja.entities.ServicioMasLlamadoDTO;
 import com.cibertec.apibarbaroja.repositories.BaseRepository;
 import com.cibertec.apibarbaroja.repositories.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,4 +55,21 @@ public class ReservaServiceImpl extends BaseServiceImpl<ReservaEntity, Integer> 
             throw new Exception("Error al actualizar el estado de la reserva: " + e.getMessage());
         }
     }
+
+    @Override
+    public List<ServicioMasLlamadoDTO> getServiciosMasLlamados() {
+        List<Object[]> resultados = reservaRepository.findServiciosMasLlamados();
+        List<ServicioMasLlamadoDTO> serviciosMasLlamados = new ArrayList<>();
+
+        for (Object[] resultado : resultados) {
+            ServicioEntity servicio = (ServicioEntity) resultado[0];
+            Long totalLlamadas = (Long) resultado[1];
+
+            ServicioMasLlamadoDTO dto = new ServicioMasLlamadoDTO(servicio, totalLlamadas);
+            serviciosMasLlamados.add(dto);
+        }
+
+        return serviciosMasLlamados;
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.cibertec.apibarbaroja.services;
 
 import com.cibertec.apibarbaroja.entities.ReservaEntity;
+import com.cibertec.apibarbaroja.entities.ServicioMasLlamadoDTO;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface ReservaService extends BaseService<ReservaEntity, Integer>{
         estado 3: "CANCELADA"
      */
     String updateEstadoByIdReserva(int idReserva, int estado) throws Exception;
+
+    List<ServicioMasLlamadoDTO> getServiciosMasLlamados();
 }

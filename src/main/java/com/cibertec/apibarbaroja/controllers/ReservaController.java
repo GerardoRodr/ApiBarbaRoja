@@ -1,6 +1,7 @@
 package com.cibertec.apibarbaroja.controllers;
 
 import com.cibertec.apibarbaroja.entities.ReservaEntity;
+import com.cibertec.apibarbaroja.entities.ServicioMasLlamadoDTO;
 import com.cibertec.apibarbaroja.services.ReservaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,5 +48,11 @@ public class ReservaController extends BaseControllerImpl<ReservaEntity, Reserva
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al actualizar el estado de la reserva: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/serviciosDestacados")
+    public ResponseEntity<List<ServicioMasLlamadoDTO>> getServiciosMasLlamados() {
+        List<ServicioMasLlamadoDTO> serviciosMasLlamados = reservaService.getServiciosMasLlamados();
+        return ResponseEntity.ok(serviciosMasLlamados);
     }
 }
