@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservaRepository extends BaseRepository<ReservaEntity, Integer>{
@@ -25,4 +26,10 @@ public interface ReservaRepository extends BaseRepository<ReservaEntity, Integer
             "GROUP BY s.id " +
             "ORDER BY totalLlamadas DESC")
     List<Object[]> findServiciosMasLlamados();
+
+    //Devuelve un número entero que representa la cantidad de reservas encontradas.
+    @Query("SELECT COUNT(r) FROM ReservaEntity r " +
+            "WHERE (r.fechaReserva BETWEEN :fechaInicio AND :fechaFin)")
+    int contarReservasEnRango(@Param("fechaInicio") LocalDateTime fechaInicio,
+                              @Param("fechaFin") LocalDateTime fechaFin);
 }

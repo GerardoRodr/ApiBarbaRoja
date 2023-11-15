@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -54,5 +56,34 @@ public class ReservaController extends BaseControllerImpl<ReservaEntity, Reserva
     public ResponseEntity<List<ServicioMasLlamadoDTO>> getServiciosMasLlamados() {
         List<ServicioMasLlamadoDTO> serviciosMasLlamados = reservaService.getServiciosMasLlamados();
         return ResponseEntity.ok(serviciosMasLlamados);
+    }
+
+    @PostMapping("/crear")
+    public ResponseEntity<?> crearReserva(@RequestBody ReservaEntity reserva) {
+
+        Object[] resultado = reservaService.validarDisponibilidadReserva(reserva.getId(), reserva.getFechaReserva());
+        boolean disponibilidad = (boolean) resultado[0];
+
+        try {
+            if (disponibilidad) {
+                reservaService.save(reserva);
+                return ResponseEntity.ok("Reserva creada correctamente");
+            } else {
+                LocalDateTime inicio = (LocalDateTime) resultado[1];
+                LocalDateTime fin = (LocalDateTime) resultado[2];
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+
+                String inicioFormateado = inicio.format(formatter);
+                String finFormateado = fin.format(formatter);
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Ya existe una reserva para el mismo servicio en el rango de tiempo especificado. " +
+                                "Prueba con estas horas: " + inicioFormateado + " o " + finFormateado);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al crear la reserva: " + e.getMessage());
+        }
     }
 }

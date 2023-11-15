@@ -6,9 +6,9 @@ import com.cibertec.apibarbaroja.entities.ServicioMasLlamadoDTO;
 import com.cibertec.apibarbaroja.repositories.BaseRepository;
 import com.cibertec.apibarbaroja.repositories.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,19 +35,21 @@ public class ReservaServiceImpl extends BaseServiceImpl<ReservaEntity, Integer> 
     public String updateEstadoByIdReserva(int idReserva, int estado) throws Exception {
         try {
             if (reservaRepository.existsById(idReserva)) {
-                switch (estado){
-                    case 1:
+                return switch (estado) {
+                    case 1 -> {
                         reservaRepository.updateEstadoById(idReserva, "PENDIENTE");
-                        return "Estado de la reserva actualizado correctamente";
-                    case 2:
+                        yield "Estado de la reserva actualizado correctamente";
+                    }
+                    case 2 -> {
                         reservaRepository.updateEstadoById(idReserva, "FINALIZADA");
-                        return "Estado de la reserva actualizado correctamente";
-                    case 3:
+                        yield "Estado de la reserva actualizado correctamente";
+                    }
+                    case 3 -> {
                         reservaRepository.updateEstadoById(idReserva, "CANCELADA");
-                        return "Estado de la reserva actualizado correctamente";
-                    default:
-                        return "Ingrese un estado valido";
-                }
+                        yield "Estado de la reserva actualizado correctamente";
+                    }
+                    default -> "Ingrese un estado valido";
+                };
             } else {
                 return "La reserva no existe";
             }
@@ -71,5 +73,24 @@ public class ReservaServiceImpl extends BaseServiceImpl<ReservaEntity, Integer> 
 
         return serviciosMasLlamados;
     }
+
+    @Override
+    public Object[] validarDisponibilidadReserva(int idServicio, LocalDateTime fechaReserva) {
+        LocalDateTime fechaInicio = fechaReserva.minusMinutes(70);
+        LocalDateTime fechaFin = fechaReserva.plusMinutes(70);
+
+        int reservasEnRango = reservaRepository.contarReservasEnRango(fechaInicio, fechaFin);
+        //Si reservasEnRango es igual a 0, entonces disponibilidad se establecerá en true,
+        // indicando que no hay reservas en el rango de tiempo especificado.
+        boolean disponibilidad = reservasEnRango == 0;
+
+        //DESPUES DE LA VALIDACION PROCEDO A DARLES 1 MINUTO MAS DE MARGEN PARA QUE SE DEVUELVAN COMO RESPUESTA.
+        fechaInicio = fechaInicio.minusMinutes(1);
+        fechaFin = fechaFin.plusMinutes(1);
+
+        //Devuelve un objeto con los 3 valores que utilizare en el controlador.
+        return new Object[]{disponibilidad, fechaInicio, fechaFin};
+    }
+
 
 }
