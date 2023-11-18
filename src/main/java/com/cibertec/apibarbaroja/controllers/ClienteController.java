@@ -34,7 +34,7 @@ public class ClienteController extends BaseControllerImpl<ClienteEntity, Cliente
             ));
         } else {
             // Inicio de sesión fallido: se devuelve el mensaje de error
-            return ResponseEntity.status(respuesta.getStatusCode()).body(respuesta.getBody());
+            return ResponseEntity.status(respuesta.getStatusCode()).body(Map.of("mensajeError", respuesta.getBody()));
         }
     }
 }
