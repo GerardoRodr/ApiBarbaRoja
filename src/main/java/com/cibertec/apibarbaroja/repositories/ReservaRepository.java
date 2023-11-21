@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservaRepository extends BaseRepository<ReservaEntity, Integer>{
-    List<ReservaEntity> findByCliente_Id(int cliente_id);
+    List<ReservaEntity> findByUsuario_Id(int usuario_id);
 
     // USANDO SQL NATIVO
     @Transactional

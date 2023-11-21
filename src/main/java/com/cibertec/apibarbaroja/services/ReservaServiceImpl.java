@@ -23,9 +23,9 @@ public class ReservaServiceImpl extends BaseServiceImpl<ReservaEntity, Integer> 
     }
 
     @Override
-    public List<ReservaEntity> reservasPorCliente(int idCliente) throws Exception {
+    public List<ReservaEntity> reservasPorUsuario(int idCliente) throws Exception {
         try {
-            return reservaRepository.findByCliente_Id(idCliente);
+            return reservaRepository.findByUsuario_Id(idCliente);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

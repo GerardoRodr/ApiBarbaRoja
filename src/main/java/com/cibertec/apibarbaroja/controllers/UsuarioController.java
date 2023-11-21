@@ -11,7 +11,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("api/v1/usuarios")
-public class UsuarioController {
+public class UsuarioController extends BaseControllerImpl<UsuarioEntity, UsuarioServiceImpl>{
     @Autowired
     private UsuarioServiceImpl usuarioService;
 

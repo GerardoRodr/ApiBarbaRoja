@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 public class ReservaEntity extends BaseEntity{
 
     @ManyToOne
-    @JoinColumn(name = "IdCliente", referencedColumnName = "id")
-    private ClienteEntity cliente;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "id")
+    private UsuarioEntity usuario;
 
     @ManyToOne
     @JoinColumn(name = "IdServicio", referencedColumnName = "id")

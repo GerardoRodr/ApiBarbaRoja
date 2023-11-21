@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservaService extends BaseService<ReservaEntity, Integer>{
-    List<ReservaEntity> reservasPorCliente(int idCliente) throws Exception;
+    List<ReservaEntity> reservasPorUsuario(int idUsuario) throws Exception;
 
     /*DONDE:
         estado 1: "PENDIENTE"

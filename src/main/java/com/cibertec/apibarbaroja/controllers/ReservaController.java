@@ -23,7 +23,7 @@ public class ReservaController extends BaseControllerImpl<ReservaEntity, Reserva
     @GetMapping("/cliente/{idCliente}")
     public ResponseEntity<?> reservasPorCliente(@PathVariable int idCliente) {
         try {
-            List<ReservaEntity> reservas = reservaService.reservasPorCliente(idCliente);
+            List<ReservaEntity> reservas = reservaService.reservasPorUsuario(idCliente);
             return ResponseEntity.ok(reservas);
         } catch (Exception e) {
             //Jajaja hay un monton de httpStatus, hay que usarlos
