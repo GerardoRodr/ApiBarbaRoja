@@ -26,7 +26,7 @@ public class ReservaEntity extends BaseEntity{
     private LocalDateTime fechaReserva;
 
     @Column(name = "FechaDeCreacion")
-    private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
 
     @Column(name = "Estado", length = 20)
     private String estado = "PENDIENTE";
