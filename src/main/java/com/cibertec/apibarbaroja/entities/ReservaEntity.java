@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @Data
@@ -26,7 +28,7 @@ public class ReservaEntity extends BaseEntity{
     private LocalDateTime fechaReserva;
 
     @Column(name = "FechaDeCreacion")
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
+    private LocalDateTime fechaCreacion = LocalDateTime.now(ZoneId.of("America/Lima"));
 
     @Column(name = "Estado", length = 20)
     private String estado = "PENDIENTE";

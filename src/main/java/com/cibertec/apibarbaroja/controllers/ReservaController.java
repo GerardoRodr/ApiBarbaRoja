@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -63,12 +65,26 @@ public class ReservaController extends BaseControllerImpl<ReservaEntity, Reserva
     @PostMapping("/crear")
     public ResponseEntity<?> crearReserva(@RequestBody ReservaEntity reserva) {
         try {
-            // Validar hora de la reserva
-            LocalTime horaReserva = reserva.getFechaReserva().toLocalTime();
+            // Obtener la fecha y hora de la reserva
+            LocalDateTime fechaHoraReserva = reserva.getFechaReserva();
+
+            // Obtener la zona horaria del cliente (o la que se esté usando en el frontend)
+            ZoneId zonaHorariaCliente = ZoneId.of("UTC"); // Ajustar según la zona horaria del frontend
+
+            // Convertir la fecha y hora a la zona horaria del backend
+            ZonedDateTime fechaHoraReservaBackend = fechaHoraReserva.atZone(zonaHorariaCliente)
+                    .withZoneSameInstant(ZoneId.of("-05:00")); // Ajustar según la zona horaria del backend
+
+            // Validar hora de la reserva en la zona horaria del backend
+            LocalTime horaReserva = fechaHoraReservaBackend.toLocalTime();
             if (horaReserva.isBefore(LocalTime.of(10, 0)) || horaReserva.isAfter(LocalTime.of(21, 0))) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(Map.of("mensaje", "La hora de la reserva debe estar entre las 10:00am y las 09:00pm"));
             }
+
+            reserva.setFechaReserva(fechaHoraReservaBackend.toLocalDateTime());
+
+            System.out.println("Fecha y hora de la reserva: " + reserva);
 
             // Validar disponibilidad de reserva
             Object[] resultado = reservaService.validarDisponibilidadReserva(reserva.getId(), reserva.getFechaReserva());
