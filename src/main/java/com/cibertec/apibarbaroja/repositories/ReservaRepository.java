@@ -12,6 +12,11 @@ import java.util.List;
 public interface ReservaRepository extends BaseRepository<ReservaEntity, Integer>{
     List<ReservaEntity> findByUsuario_Id(int usuario_id);
 
+    //La consulta selecciona todas las reservas cuya fecha de reserva
+    // sea igual o posterior a la fecha y hora actual
+    @Query("SELECT r FROM ReservaEntity r WHERE r.fechaReserva >= CURRENT_TIMESTAMP ORDER BY r.fechaReserva ASC")
+    List<ReservaEntity> findAllReservasProximas();
+
     // USANDO SQL NATIVO
     @Transactional
     @Modifying

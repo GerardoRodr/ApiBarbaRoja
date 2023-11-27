@@ -35,6 +35,16 @@ public class ReservaController extends BaseControllerImpl<ReservaEntity, Reserva
         }
     }
 
+    @GetMapping("/reservasProximas")
+    public ResponseEntity<?> reservasProximas() {
+        try {
+            List<ReservaEntity> reservas = reservaService.reservasProximas();
+            return ResponseEntity.ok(reservas);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("mensaje", e.getMessage()));
+        }
+    }
+
     /*DONDE:
     estado 1: "PENDIENTE"
     estado 2: "FINALIZADA"
@@ -45,7 +55,7 @@ public class ReservaController extends BaseControllerImpl<ReservaEntity, Reserva
         try {
             if (estado < 4) {
                 String mensaje = reservaService.updateEstadoByIdReserva(idReserva, estado);
-                return ResponseEntity.ok(mensaje);
+                return ResponseEntity.ok(Map.of("mensaje", mensaje));
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(Map.of("mensaje", "Elija por favor un estado valido"));

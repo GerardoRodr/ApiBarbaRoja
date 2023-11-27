@@ -9,6 +9,8 @@ import java.util.List;
 public interface ReservaService extends BaseService<ReservaEntity, Integer>{
     List<ReservaEntity> reservasPorUsuario(int idUsuario) throws Exception;
 
+    List<ReservaEntity> reservasProximas() throws Exception;
+
     /*DONDE:
         estado 1: "PENDIENTE"
         estado 2: "FINALIZADA"

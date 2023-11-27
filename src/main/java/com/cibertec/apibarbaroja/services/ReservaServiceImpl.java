@@ -32,6 +32,15 @@ public class ReservaServiceImpl extends BaseServiceImpl<ReservaEntity, Integer> 
     }
 
     @Override
+    public List<ReservaEntity> reservasProximas() throws Exception {
+        try {
+            return reservaRepository.findAllReservasProximas();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
     public String updateEstadoByIdReserva(int idReserva, int estado) throws Exception {
         try {
             if (reservaRepository.existsById(idReserva)) {
